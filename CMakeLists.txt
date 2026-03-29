@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.12)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if(POLICY CMP0141)
@@ -11,11 +11,13 @@ project("SyncWave")
 #setting the directories
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/src/imgui)
 file(GLOB all_SRCS
   "${PROJECT_SOURCE_DIR}/include/*.h"
   "${PROJECT_SOURCE_DIR}/include/*.hpp"
   "${PROJECT_SOURCE_DIR}/src/*.cpp"
   "${PROJECT_SOURCE_DIR}/src/*.c"
+  "${PROJECT_SOURCE_DIR}/src/imgui/*.cpp"
 )
 
 #Set the compiler flags for using static libraries
@@ -38,10 +40,10 @@ add_executable(${PROJECT_NAME} ${all_SRCS})
 
 if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /utf-8 )
+    target_link_libraries(${PROJECT_NAME} d3d11 d3dcompiler)
 else()
     target_compile_options(${PROJECT_NAME} PRIVATE)
 endif()
-
 
 if(CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
